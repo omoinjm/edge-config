@@ -1,0 +1,44 @@
+# Node.js
+# Build a Node.js project with Azure Pipelines.
+# Add steps that publish artifacts, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  - main
+
+name: Node.js Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_FUNCTION_APP_NAME: "edge-config"
+  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: Build and Deploy
+        run: |
+          npm run build
+          npx azure-functions-action run \
+            --name ${AZURE_FUNCTION_APP_NAME} \
+            --package-directory $(pwd)/dist \
+            --publish-profile ${AZURE_WEBAPP_PUBLISH_PROFILE}
+          npx azure-functions-action logout
