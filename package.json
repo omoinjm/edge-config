@@ -7,7 +7,7 @@
 		"watch": "tsc -w",
 		"prestart": "npm run build",
 		"start": "func start",
-		"test": "echo \"No tests yet...\""
+		"test": "NODE_ENV=test mocha --check-leaks ./_tests_/index.js"
 	},
 	"author": "Nhlanhla Malaza",
 	"license": "MIT",
@@ -18,7 +18,9 @@
 	},
 	"devDependencies": {
 		"@azure/functions": "^3.0.0",
+		"@types/mocha": "^10.0.1",
 		"@types/node": "16.x",
+		"mocha": "^10.2.0",
 		"typescript": "^4.0.0"
 	}
 }

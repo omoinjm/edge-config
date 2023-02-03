@@ -1,7 +1,15 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/azure/functions-action
+# Node.js
+# Docs for the Azure Web Apps Deploy action:
+# https://github.com/azure/functions-action
+# Build a Node.js project with Azure Pipelines.
 # More GitHub Actions for Azure: https://github.com/Azure/actions
+# Add steps that publish artifacts, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
-name: Build and deploy Node.js project to Azure Function App - edge-config
+trigger:
+  - main
+
+name: Build and deploy Node.js project to Azure Function App (edge-config)
 
 on:
   push:
@@ -10,35 +18,38 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_FUNCTIONAPP_PACKAGE_PATH: "." # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: "16.x" # set this to the node version to use (supports 8.x, 10.x, 12.x)
+  AZURE_FUNCTIONAPP_PACKAGE_PATH: '.' # set this to the path to your web app project, defaults to the repository root
+  NODE_VERSION: '16.x' # set this to the node version to use (supports 8.x, 10.x, 12.x)
+  AZURE_FUNCTION_APP_NAME: 'edge-config'
+  AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B9D98DCC8D4749DE8622A441465F63D4 }}
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
-      - name: "Checkout GitHub Action"
+      - name: 'Checkout GitHub Action'
         uses: actions/checkout@v2
 
       - name: Setup Node ${{ env.NODE_VERSION }} Environment
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: "Resolve Project Dependencies Using Npm"
+      - name: 'Resolve Project Dependencies Using Npm'
         shell: bash
         run: |
           pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}'
-          npm install
+          npm ci
           npm run build --if-present
           npm run test --if-present
           popd
 
-      - name: "Run Azure Functions Action"
+      - name: 'Run Azure Functions Action'
         uses: Azure/functions-action@v1
         id: fa
         with:
-          app-name: "edge-config"
-          slot-name: "Production"
+          app-name: 'edge-config'
+          slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_B9D98DCC8D4749DE8622A441465F63D4 }}
