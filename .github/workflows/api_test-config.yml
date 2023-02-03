@@ -1,0 +1,24 @@
+name: Test Data response
+
+on:
+  push:
+    branches:
+      - _deploy_production_
+  workflow_dispatch:
+
+env:
+  ENV_NAME: production
+  HTTP: https://edge-config.azurewebsites.net/api/graphql?code=
+  TOKEN: 9wFQhRQECa3Q1ZjryRpZefEWiofai_xX-dmk1FseMXsLAzFuUFComg==
+  URL: ${{ env.HTTP }}${{ env.TOKEN }}
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 'Fetch routes data'
+        shell: bash
+        run: |
+          echo ${{ env.URL }}
+          curl -X POST -H "Content-Type: application/json" -d '{"query": "{ getAllRoutes { id link name } }"}' ${{ env.URL }}
