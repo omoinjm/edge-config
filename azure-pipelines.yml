@@ -22,31 +22,24 @@ steps:
 - script: |
     npm run build
   displayName: 'npm build'
-
+- task: NodeTool@0
+  inputs:
+    versionSource: 'spec'
+    versionSpec: '16.x'
 - task: ArchiveFiles@2
   inputs:
-    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
-    includeRootFolder: false
+    rootFolderOrFile: '$(Build.BinariesDirectory)'
+    includeRootFolder: true
     archiveType: 'zip'
-    archiveFile: '$(System.DefaultWorkingDirectory)/dist.zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
     replaceExistingArchive: true
-
-- task: CopyFiles@2
+- task: AzureFunctionApp@1
   inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: '*.tgz' 
-    targetFolder: $(Build.ArtifactStagingDirectory)/npm
-  displayName: 'Copy npm package'
-
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(Build.SourcesDirectory)'
-    contents: 'package.json' 
-    targetFolder: $(Build.ArtifactStagingDirectory)/npm
-  displayName: 'Copy package.json'   
-
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/npm'
-    artifactName: npm
-  displayName: 'Publish npm artifact'
+    azureSubscription: 'Azure subscription 1 (d4d0e9c4-0117-4691-b622-ffa3af4cd796)'
+    appType: 'functionAppLinux'
+    appName: 'edge-config'
+    deployToSlotOrASE: true
+    resourceGroupName: 'demo-learning'
+    slotName: 'production'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    runtimeStack: 'NODE|16'
