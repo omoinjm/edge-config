@@ -1,83 +1,44 @@
-# Node.js Function App to Linux on Azure
-# Build a Node.js function app and deploy it to Azure as a Linux function app.
-# Add steps that analyze code, save build artifacts, deploy, and more:
+# Node.js
+# Build a Node.js project with Azure Pipelines.
+# Add steps that publish artifacts, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
 - main
 
-variables:
+pool:
+  vmImage: 'ubuntu-latest'
 
-  # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '566ebf01-bca2-439a-830f-f8eae785a456'
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '12.x'
+  displayName: 'Install Node.js'
 
-  # Function app name
-  functionAppName: ''
+- script: |
+    npm install
+    npm run build
+  displayName: 'npm install and build'
 
-  # Environment name
-  environmentName: ''
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(System.DefaultWorkingDirectory)/dist'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(System.DefaultWorkingDirectory)/dist.zip'
+    replaceExistingArchive: true
 
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Azure Subscription 1'
+    appName: 'edge-config'
+    package: '$(System.DefaultWorkingDirectory)/dist.zip'
+    nodeVersion: '16.x'
 
-stages:
-- stage: Build
-  displayName: Build stage
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '10.x'
-      displayName: 'Install Node.js'
 - task: AzureFunctionApp@1
   inputs:
-    azureSubscription: 'Azure subscription 1 (d4d0e9c4-0117-4691-b622-ffa3af4cd796)'
-    appType: 'functionAppLinux'
+    azureSubscription: 'Azure Subscription 1'
     appName: 'edge-config'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    runtimeStack: 'NODE|16'
-    startUpCommand: 'func start'
-    - script: |
-        npm install
-        npm run build --if-present
-        npm run test --if-present
-      displayName: 'Prepare binaries'
-
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
-
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop
-
-- stage: Deploy
-  displayName: Deploy stage
-  dependsOn: Build
-  condition: succeeded()
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    environment: $(environmentName)
-    pool:
-      vmImage: $(vmImageName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureFunctionApp@1
-            displayName: 'Azure Functions App Deploy: '
-            inputs:
-              azureSubscription: '$(azureSubscription)'
-              appType: functionAppLinux
-              appName: $(functionAppName)
-              package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+    package: '$(System.DefaultWorkingDirectory)/dist.zip'
+    nodeVersion: '16.x'
+    startUpCommand: 'npm run start'
