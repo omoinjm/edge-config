@@ -1,0 +1,19 @@
+{
+	"pageLinks": [
+		{
+			"id": 0,
+			"link": "skill",
+			"name": "Skills"
+		},
+		{
+			"id": 1,
+			"link": "project",
+			"name": "Portfolio"
+		},
+		{
+			"id": 2,
+			"link": "contact",
+			"name": "Contact"
+		}
+	]
+}

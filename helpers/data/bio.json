@@ -1,0 +1,70 @@
+{
+	"njmbio": {
+		"name": "@nhlanhlamalaza_",
+		"avatar": "https://pbs.twimg.com/profile_images/1609469899797319682/Cs9nxL0l_400x400.jpg",
+		"links": [
+			{
+				"title": "Email",
+				"href": "mailto:n.malaza@proton.me",
+				"icons": "/icons/email.png",
+				"color": "#2578af"
+			},
+			{
+				"title": "Official Website",
+				"href": "https://njmtech.vercel.app/",
+				"icons": "/icons/web-link.png",
+				"color": "#8c4498"
+			},
+			{
+				"title": "Email Marketing",
+				"href": "https://njmtech.vercel.app/coming-soon",
+				"icons": "/icons/email-marketing.png",
+				"color": "#f29904"
+			},
+			{
+				"title": "Search Engine Optimization",
+				"href": "https://njmtech.vercel.app/coming-soon",
+				"icons": "/icons/seo.png",
+				"color": ""
+			},
+			{
+				"title": "E-commerce Stores",
+				"href": "https://njmtech.vercel.app/coming-soon",
+				"icons": "/icons/online-shopping.png",
+				"color": ""
+			},
+			{
+				"title": "Spotify playlist - ENDZ",
+				"href": "https://open.spotify.com/playlist/43MBkM2f043dPyBEhRuE8Z?si=01fc1ee143234754",
+				"icons": "/icons/spotify.png",
+				"color": ""
+			}
+		],
+		"socials": [
+			{
+				"title": "Twiiter",
+				"href": "https://twitter.com/nhlanhlamalaza_",
+				"icons": "/icons/twitter.svg",
+				"color": "#4a99e9"
+			},
+			{
+				"title": "GitHub",
+				"href": "https://github.com/omoinjm",
+				"icons": "/icons/github.svg",
+				"color": ""
+			},
+			{
+				"title": "Instagram",
+				"href": "https://instagram.com/nhlanhlamalaza_",
+				"icons": "/icons/instagram.svg",
+				"color": "#fd0070"
+			},
+			{
+				"title": "LinkedIn",
+				"href": "https://www.linkedin.com/in/njmalaza/",
+				"icons": "/icons/linkedin.svg",
+				"color": "#0a66c2"
+			}
+		]
+	}
+}

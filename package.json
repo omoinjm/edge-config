@@ -1,0 +1,24 @@
+{
+	"name": "edge-config",
+	"version": "1.0.0",
+	"description": "A better serverless version of Vercel Egde Config",
+	"scripts": {
+		"build": "tsc",
+		"watch": "tsc -w",
+		"prestart": "npm run build",
+		"start": "func start",
+		"test": "echo \"No tests yet...\""
+	},
+	"author": "Nhlanhla Malaza",
+	"license": "MIT",
+	"dependencies": {
+		"apollo-server-azure-functions": "^3.11.1",
+		"graphql": "^16.6.0",
+		"graphql-tools": "^8.3.17"
+	},
+	"devDependencies": {
+		"@azure/functions": "^3.0.0",
+		"@types/node": "16.x",
+		"typescript": "^4.0.0"
+	}
+}
