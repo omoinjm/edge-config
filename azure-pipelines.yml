@@ -30,14 +30,14 @@ steps:
 
 - task: AzureWebApp@1
   inputs:
-    azureSubscription: 'Azure Subscription 1'
+    azureSubscription: 'Azure subscription 1'
     appName: 'edge-config'
     package: '$(System.DefaultWorkingDirectory)/dist.zip'
     nodeVersion: '16.x'
 
 - task: AzureFunctionApp@1
   inputs:
-    azureSubscription: 'Azure Subscription 1'
+    azureSubscription: 'Azure subscription 1'
     appName: 'edge-config'
     package: '$(System.DefaultWorkingDirectory)/dist.zip'
     nodeVersion: '16.x'
